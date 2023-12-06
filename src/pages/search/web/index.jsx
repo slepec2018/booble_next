@@ -1,4 +1,5 @@
 import SearchHeader from "@/components/SearchHeader"
+import WebSearchResults from "@/components/WebSearchResults";
 import Link from "next/link";
 
 export default function WebSearchPage({list}) {
@@ -27,11 +28,9 @@ export default function WebSearchPage({list}) {
           </p>
         </div>
       )}
-      {list && list.map((result) => (
-        <h1>
-          {result.title}
-        </h1>
-      ))}
+      {list.items && list.items.length > 0 && (
+        <WebSearchResults results={list} />
+      )}
     </>
   )
 }
@@ -47,7 +46,7 @@ export async function getServerSideProps(context) {
     }
 
     const data = await request.json();
-    const results = data.items;
+    const results = data;
 
     if (!results) {
       console.log("No results found");
