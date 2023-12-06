@@ -1,9 +1,32 @@
 import SearchHeader from "@/components/SearchHeader"
+import Link from "next/link";
 
 export default function WebSearchPage({list}) {
   return (
     <>
       <SearchHeader />
+      {!list || list.length === 0 && (
+        <div
+          className="flex flex-col justify-center items-center pt-10"
+        >
+          <h1
+            className="text-3xl mb-4"
+          >
+            No results found
+          </h1>
+          <p
+            className="text-lg"
+          >
+            Try searching for something else or go back to the homepage{" "} 
+            <Link
+              href="/"
+              className="text-blue-500"
+            >
+              Home
+            </Link>
+          </p>
+        </div>
+      )}
       {list && list.map((result) => (
         <h1>
           {result.title}
@@ -26,10 +49,20 @@ export async function getServerSideProps(context) {
     const data = await request.json();
     const results = data.items;
 
+    if (!results) {
+      console.log("No results found");
+      return {
+        props: {
+          list: [],
+          revalidate: 1
+        },
+      };
+    }
+
     return {
       props: {
         list: results,
-        revalidate: 10
+        revalidate: 1
       },
     };
   } catch (error) { 
