@@ -37,10 +37,10 @@ export default function ImageSearchPage({list}) {
 
 export async function getServerSideProps(context) { 
   const { query } = context;
-  const { searchTerm } = query;
+  const { searchTerm, start } = query;
 
   try {
-    const request = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.API_KEY}&cx=${process.env.CONTEXT_KEY}&q=${searchTerm}&searchType=image`);
+    const request = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.API_KEY}&cx=${process.env.CONTEXT_KEY}&q=${searchTerm}&searchType=image&start=${start || "1"}`);
     if (!request.ok) {
       throw new Error("Failed to fetch data");
     }

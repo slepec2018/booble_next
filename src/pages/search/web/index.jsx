@@ -37,10 +37,12 @@ export default function WebSearchPage({list}) {
 
 export async function getServerSideProps(context) { 
   const { query } = context;
-  const { searchTerm } = query;
+  const { searchTerm, start } = query;
 
   try {
-    const request = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.API_KEY}&cx=${process.env.CONTEXT_KEY}&q=${searchTerm}`);
+    console.log(`https://www.googleapis.com/customsearch/v1?key=${process.env.API_KEY}&cx=${process.env.CONTEXT_KEY}&q=${searchTerm}&start=${start || 1}`);
+    console.log(start);
+    const request = await fetch(`https://www.googleapis.com/customsearch/v1?key=${process.env.API_KEY}&cx=${process.env.CONTEXT_KEY}&q=${searchTerm}&start=${start || "1"}`);
     if (!request.ok) {
       throw new Error("Failed to fetch data");
     }
